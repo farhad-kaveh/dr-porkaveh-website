@@ -1,0 +1,61 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<style>
+  .planner-wrap{max-width:1100px}
+  .planner-nav{display:flex;align-items:center;gap:12px;justify-content:space-between;margin:0 0 18px;flex-wrap:wrap}
+  .planner-nav h2{margin:0}
+  .planner-nav a{padding:8px 12px;background:#f5f5f5;border:1px solid #ddd;border-radius:4px;text-decoration:none}
+  .planner-note{background:#fff;border:1px solid #ddd;padding:12px;margin-bottom:16px}
+  .day-card{background:#fff;border:1px solid #ddd;border-radius:6px;margin-bottom:12px;padding:14px}
+  .day-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .day-head strong{font-size:16px}
+  .window{display:grid;grid-template-columns:90px 1fr 1fr;gap:8px;align-items:center;margin:7px 0}
+  .window label{font-size:12px;color:#666}
+  .window input[type=time]{width:100%;box-sizing:border-box}
+  .save-bar{position:sticky;bottom:0;background:#fff;border-top:1px solid #ddd;padding:12px 0;margin-top:18px}
+  .save-bar input[type=submit]{padding:10px 22px;cursor:pointer}
+  .hint{color:#666;font-size:13px}
+  @media(max-width:700px){.window{grid-template-columns:1fr 1fr}.window label{grid-column:1/-1}}
+</style>
+<div class="planner-wrap">
+  <div class="planner-nav">
+    <a href="?week={{ previous_week|date:'Y-m-d' }}">← هفته قبل</a>
+    <h2>برنامه هفته شروع {{ selected_week|date:'Y/m/d' }}</h2>
+    <a href="?week={{ next_week|date:'Y-m-d' }}">هفته بعد →</a>
+  </div>
+
+  <p class="hint">
+    {% if is_specific %}این هفته برنامه اختصاصی دارد و برنامه پیش‌فرض را نادیده می‌گیرد.{% else %}در حال نمایش برنامه پیش‌فرض؛ با ذخیره، برنامه اختصاصی همین هفته ساخته می‌شود.{% endif %}
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="week_start" value="{{ selected_week|date:'Y-m-d' }}">
+    <input type="hidden" name="action" value="save">
+
+    {% for day in days %}
+    <div class="day-card">
+      <div class="day-head"><strong>{{ day.label }}</strong><span class="hint">حداکثر دو بازه کاری</span></div>
+      {% for window in day.windows %}
+      {% with idx=forloop.counter %}
+      <div class="window">
+        <label>بازه {{ idx }}</label>
+        <input type="time" name="day_{{ day.weekday }}_start_{{ idx }}" value="{{ window.start }}">
+        <input type="time" name="day_{{ day.weekday }}_end_{{ idx }}" value="{{ window.end }}">
+        <label style="grid-column:1/-1"><input type="checkbox" name="day_{{ day.weekday }}_active_{{ idx }}" {% if window.active %}checked{% endif %}> این بازه فعال باشد</label>
+      </div>
+      {% endwith %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <div class="planner-note">
+      <label for="id_note"><strong>توضیح این هفته</strong></label>
+      <input id="id_note" type="text" name="note" value="{{ note }}" style="width:100%;box-sizing:border-box;margin-top:7px" placeholder="مثلاً شنبه به دلیل جلسه مطب تعطیل است">
+    </div>
+
+    <div class="save-bar"><input class="default" type="submit" value="ذخیره برنامه این هفته"></div>
+  </form>
+</div>
+{% endblock %}

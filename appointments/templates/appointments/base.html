@@ -1,0 +1,75 @@
+{% load static %}
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="{% block meta_description %}مطب تخصصی دکتر سجاد پورکاوه، متخصص جراحی لثه و ایمپلنت در بجنورد.{% endblock %}">
+<title>{% block title %}دکتر سجاد پورکاوه | متخصص جراحی لثه و ایمپلنت{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'appointments/style.css' %}?v=13">
+<link rel="icon" type="image/png" href="{% static 'appointments/img/favicon.png' %}">
+{% block extra_css %}{% endblock %}
+
+<meta name="robots" content="{% block robots_meta %}index,follow{% endblock %}">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{% block og_title %}دکتر سجاد پورکاوه | متخصص جراحی لثه و ایمپلنت{% endblock %}">
+<meta property="og:description" content="مطب تخصصی جراحی لثه و ایمپلنت دکتر سجاد پورکاوه در بجنورد.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:locale" content="fa_IR">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Dentist",
+  "name":"مطب دکتر سجاد پورکاوه",
+  "telephone":"+989354409323",
+  "address":{
+    "@type":"PostalAddress",
+    "streetAddress":"چهارراه مخابرات، خیابان شریعتی جنوبی، ساختمان پزشکان نورا",
+    "addressLocality":"بجنورد",
+    "addressCountry":"IR"
+  },
+  "medicalSpecialty":"Periodontics"
+}
+</script>
+</head>
+<body class="{% if request.resolver_match.url_name == 'home' %}home-page{% endif %}">
+  <header class="site-header">
+    <a class="brand" href="{% url 'home' %}" aria-label="دکتر سجاد پورکاوه">
+      <img src="{% static 'appointments/img/clinic-logo.png' %}" alt="لوگوی مطب" class="brand-logo brand-logo-clinic">
+      <span class="brand-divider"></span>
+      <img src="{% static 'appointments/img/doctor-name-nastaliq.png' %}" alt="دکتر سجاد پورکاوه" class="brand-name-image">
+    </a>
+    <nav class="nav" id="nav">
+      <a {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %} href="{% url 'home' %}">خانه</a>
+      <a href="{% url 'home' %}#services">خدمات</a>
+      <a href="{% url 'home' %}#cases">نمونه‌کارها</a>
+      <a href="{% url 'home' %}#doctor">درباره دکتر</a>
+      <a href="{% url 'education' %}">آموزش</a>
+      <a href="{% url 'home' %}#contact">تماس با ما</a>
+    </nav>
+    <a class="header-cta" href="{% url 'booking' %}">دریافت نوبت <span>↗</span></a>
+    <button class="menu-btn" aria-label="باز کردن منو" aria-expanded="false">☰</button>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <footer class="footer section-shell">
+    <div><strong>دکتر سجاد پورکاوه</strong><span>متخصص جراحی لثه و ایمپلنت</span></div>
+    <div><span>بجنورد، چهارراه مخابرات، خیابان شریعتی جنوبی</span><span>ساختمان پزشکان نورا</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+      <a href="tel:+989354409323">۰۹۳۵۴۴۰۹۳۲۳</a>
+      <div class="footer-socials">
+        <a href="https://instagram.com/DR.Sajjad.porkave" target="_blank" rel="noopener">اینستاگرام مطب</a>
+        <span aria-hidden="true">•</span>
+        <a href="https://instagram.com/DR.Sajjad.porkave" target="_blank" rel="noopener">اینستاگرام</a>
+      </div>
+    </div>
+  </footer>
+  <script src="{% static 'appointments/script.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

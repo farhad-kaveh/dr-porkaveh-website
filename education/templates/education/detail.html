@@ -1,0 +1,31 @@
+{% extends 'appointments/base.html' %}
+{% load static %}
+{% block title %}{{ article.title }} | دکتر سجاد پورکاوه{% endblock %}
+{% block meta_description %}{{ article.excerpt }}{% endblock %}
+{% block og_title %}{{ article.title }} | دکتر سجاد پورکاوه{% endblock %}
+{% block content %}
+<main class="article-page section-shell">
+  <nav class="article-breadcrumb"><a href="{% url 'education' %}">چند دقیقه مطالعه مفید</a><span> / </span><span>{{ article.get_category_display }}</span></nav>
+  <article>
+    <header class="article-header">
+      <p class="eyebrow">{{ article.get_category_display }}</p>
+      <h1>{{ article.title }}</h1>
+      <p class="article-excerpt">{{ article.excerpt }}</p>
+    </header>
+    <div class="article-cover">{% if article.image|slice:":4" == "http" %}<img src="{{ article.image }}" alt="{{ article.title }}">{% else %}<img src="{% static article.image %}" alt="{{ article.title }}">{% endif %}</div>
+    <div class="article-layout">
+      <div class="article-body">{{ article.body|safe }}</div>
+      <aside class="article-aside">
+        <a class="article-back" href="{% url 'education' %}">← بازگشت به آموزش</a>
+        <div class="article-note"><strong>یادآوری</strong><p>این مطالب برای آشنایی عمومی با موضوعات دندانپزشکی نوشته شده‌اند و جایگزین معاینه و تشخیص فردی نیستند.</p></div>
+      </aside>
+    </div>
+    {% if article.faq %}
+    <section class="article-faq"><h2>سوالات رایج</h2>{% for item in article.faq %}<details><summary>{{ item.q }}</summary><p>{{ item.a }}</p></details>{% endfor %}</section>
+    {% endif %}
+    {% if article.sources %}<section class="article-sources"><h2>منابع</h2><ol>{% for source in article.sources %}<li><a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.title }}</a></li>{% endfor %}</ol></section>{% endif %}
+    {% if related %}<section class="related-articles"><h2>مطالعه مرتبط</h2><div class="article-grid">{% for item in related %}<a class="article-card compact" href="{% url 'education_detail' item.slug %}"><div class="article-card-image">{% if item.image|slice:":4" == "http" %}<img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">{% else %}<img src="{% static item.image %}" alt="{{ item.title }}" loading="lazy">{% endif %}</div><div class="article-card-copy"><h3>{{ item.title }}</h3><span class="article-read">مطالعه کوتاه ←</span></div></a>{% endfor %}</div></section>{% endif %}
+  </article>
+</main>
+<script type="application/ld+json">{{ article_jsonld|default:'{}'|safe }}</script>
+{% endblock %}

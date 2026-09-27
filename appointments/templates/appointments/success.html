@@ -1,0 +1,19 @@
+{% extends "appointments/base.html" %}
+{% load static %}
+{% block title %}نوبت ثبت شد | دکتر سجاد پورکاوه{% endblock %}
+{% block og_title %}نوبت ثبت شد | دکتر سجاد پورکاوه{% endblock %}
+{% block robots_meta %}noindex,follow{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'appointments/booking.css' %}">{% endblock %}
+{% block content %}
+<main class="success-page section-shell">
+  <div class="success-card">
+    <div class="success-check">✓</div>
+    <p class="eyebrow">رزرو موفق</p>
+    <h1>نوبت شما ثبت شد.</h1>
+    <p>تاریخ: <b>{{ jalali_date }}</b></p>
+    <p>ساعت: <b>{{ appointment.start_time|time:"H:i" }}</b></p>
+    <p>برای تغییر یا لغو نوبت، با مطب تماس بگیرید.</p>
+    <a class="outline-button" href="{% url 'home' %}">بازگشت به سایت</a>
+  </div>
+</main>
+{% endblock %}

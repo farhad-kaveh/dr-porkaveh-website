@@ -1,0 +1,37 @@
+{% extends 'appointments/base.html' %}
+{% load static %}
+{% block title %}چند دقیقه مطالعه مفید | دکتر سجاد پورکاوه{% endblock %}
+{% block meta_description %}راهنمای کوتاه و کاربردی دکتر سجاد پورکاوه درباره بهداشت دهان، ایمپلنت، بیماری‌های لثه، پوسیدگی و برندهای ایمپلنت.{% endblock %}
+{% block content %}
+<main class="education-page">
+  <section class="education-hero section-shell">
+    <p class="eyebrow">چند دقیقه مطالعه مفید</p>
+    <h1>هر دندانی که از دست می‌رود، چند سؤال پشت سر خود دارد.</h1>
+    <p>چرا این دندان؟ چرا حالا؟ و آیا می‌شد از آن جلوگیری کرد؟</p>
+    <p class="education-lead">پاسخ این سؤال‌ها همیشه روی سطح دندان دیده نمی‌شود. گاهی باید کمی عمیق‌تر نگاه کرد.</p>
+    <div class="education-keywords">
+      <a href="#hygiene">آموزش های ضروری بهداشت</a>
+      <a href="#implant">آشنایی با درمان ایمپلنت</a>
+      <a href="#brands">برند های ایمپلنت</a>
+      <a href="#disease">بیماری شناسی</a>
+    </div>
+  </section>
+  <section class="education-groups section-shell">
+    {% for group in groups %}
+    <section class="education-group" id="{{ group.key }}">
+      <div class="education-group-head">
+        <div><p class="eyebrow">{{ group.title }}</p><h2>{{ group.title }}</h2><p>{{ group.desc }}</p></div>
+      </div>
+      <div class="article-grid">
+        {% for article in group.articles %}
+        <a class="article-card" href="{% url 'education_detail' article.slug %}">
+          <div class="article-card-image">{% if article.image|slice:":4" == "http" %}<img src="{{ article.image }}" alt="{{ article.title }}" loading="lazy">{% else %}<img src="{% static article.image %}" alt="{{ article.title }}" loading="lazy">{% endif %}</div>
+          <div class="article-card-copy"><span class="article-category">{{ group.title }}</span><h3>{{ article.title }}</h3><p>{{ article.excerpt }}</p><span class="article-read">مطالعه کوتاه ←</span></div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

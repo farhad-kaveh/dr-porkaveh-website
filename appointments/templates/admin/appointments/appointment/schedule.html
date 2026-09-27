@@ -1,0 +1,45 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<style>
+  .schedule-wrap{max-width:1100px}
+  .schedule-nav{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+  .schedule-nav a{padding:8px 12px;background:#f5f5f5;border:1px solid #ddd;border-radius:4px;text-decoration:none}
+  .schedule-nav form{display:flex;gap:8px;align-items:center}
+  .schedule-nav input{padding:7px}
+  .summary{background:#fff;border:1px solid #ddd;padding:14px;margin-bottom:14px}
+  .slot-table{width:100%;border-collapse:collapse;background:#fff}
+  .slot-table th,.slot-table td{padding:11px;border-bottom:1px solid #eee;text-align:right}
+  .slot-table th{background:#f7f7f7}
+  .booked{font-weight:600}
+  .empty{color:#777}
+  .phone{direction:ltr;display:inline-block}
+</style>
+<div class="schedule-wrap">
+  <div class="schedule-nav">
+    <a href="?date={{ yesterday|date:'Y-m-d' }}">روز قبل</a>
+    <h2>نوبت‌های {{ jalali_selected_date }}</h2>
+    <a href="?date={{ tomorrow|date:'Y-m-d' }}">فردا</a>
+    <form method="get"><input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}"><button type="submit">نمایش</button></form>
+  </div>
+  <div class="summary"><strong>{{ appointment_count }}</strong> نوبت رزرو شده برای این روز</div>
+  <table class="slot-table">
+    <thead><tr><th>ساعت</th><th>وضعیت</th><th>نام بیمار</th><th>شماره موبایل</th></tr></thead>
+    <tbody>
+      {% for slot in slots %}
+      <tr>
+        <td>{{ slot.time }}</td>
+        {% if slot.appointment %}
+          <td class="booked">رزرو شده</td>
+          <td>{{ slot.appointment.patient.full_name }}</td>
+          <td><span class="phone">{{ slot.appointment.patient.phone }}</span></td>
+        {% else %}
+          <td class="empty">آزاد</td><td class="empty">—</td><td class="empty">—</td>
+        {% endif %}
+      </tr>
+      {% empty %}
+      <tr><td colspan="4" class="empty">برای این روز ساعت کاری تعریف نشده است.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
