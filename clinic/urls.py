@@ -4,11 +4,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('appointments.urls')),
-    path('education/', include('education.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("appointments.urls")),
+    path("education/", include("education.urls")),
 ]
 
 if settings.DEBUG:
-    # In production, the reverse proxy serves /media/ directly — see DEPLOYMENT.md.
+    # Development only. In production, Liara's web server serves /media/.
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
